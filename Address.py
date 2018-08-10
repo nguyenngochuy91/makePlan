@@ -8,27 +8,33 @@
                    pip install pandas
 '''
 # packages for location look up
-from geopy.geocoders import Nominatim
+import requests
 from geopy.distance import geodesic
 # packages for tsp
 import tsp 
 
-geolocator = Nominatim(user_agent="makePlan")
 
 class Address(object):
     def __init__(self,address):
-        self.location   = geolocator.geocode(address)
-        if self.location:
-            self.latitude   = self.location.latitude
-            self.longtitude = self.location.longitude
-            self.address    = self.location.address
+        self.address  = address
+        self.response = self.getResponse()
+        self.status   = self.response["status"]
+        if self.status =="OK":
+            self.error      = None
+            self.results    = self.response["results"]
+            self.location   = self.results[0]["geometry"]["location"]
+            self.latitude   = self.location["lat"]
+            self.longtitude = self.location["lng"]
         else:
-            print ("Address not found")
+            self.error      = self.status
+    def getResponse(self):
+        address = "+".join(self.address.split())
+        return requests.get("https://maps.googleapis.com/maps/api/geocode/json?address={}".format(address)).json()
         
 """
 functions : Given a list of addresses, get all the distances between them, stores in a dictionary
 input     : List of addresses
-output    : dictionary, (key: a number, value: address), a distance matrix
+output    : dictionary for name, (key: a number, value: address), a distance matrix
 """
 def getDistance(addresses):
     distance_matrix = {}
@@ -63,3 +69,35 @@ output    : route, cost
 def TSPApprox(address_name,distance_matrix):
     route = []
     distance = 0
+"""
+functions : Giving the route, output it nicely as a map
+input     : route, cost
+output    : map (string)
+"""
+def beautify(route):
+    route = [str(r) for r in route]
+    return "-->".join(route)
+
+if __name__ == '__main__':
+    addresses= []
+    print ("welcome to makePlan app!!!!!! \n")
+    while True:
+        try:
+            address = input("Please input our address of interest or type N/n for stop:\n")
+        except:
+            address = raw_input("Please input our address of interest or type N/n for stop:\n")
+        if address in "Nn":
+            break
+        else:
+            address = Address(address)
+            while address.error:
+                try:
+                    address = input("Please input a correct address of interest ^^:\n")
+                except:
+                    address = raw_input("Please input a correct address of interest ^^:\n")
+            addresses.append(address)
+    # getting the distance and name
+    address_name,distance_matrix = getDistance(addresses)
+    # get the route and total distance
+    cost, route                  = TSPOpt(address_name,distance_matrix)
+    print ("The route is {}, and the total distance is {}".format(beautify(route),cost))
