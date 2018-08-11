@@ -3,7 +3,7 @@
     Program      : Address Class
     Start        : 07/04/2018
     End          : /2018
-    Dependencies : pip install tsp
+    Dependencies : pip(3) install tsp
                    pip install pandas
 '''
 # packages for location look up
