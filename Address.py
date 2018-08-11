@@ -9,7 +9,6 @@
 # packages for location look up
 import requests
 # packages for tsp
-import tsp 
 
 
 class Address(object):
