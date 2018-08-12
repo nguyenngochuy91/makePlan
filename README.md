@@ -1,12 +1,12 @@
 # makePlan
 ## Purpose
 
-makePlan is a tool to help user create plan for a trip. User will input attractions name and address,
+**makePlan** is a tool to help users creating plan for trips. Users will input attractions name and address,
 and the tool will output the shortest tour that visit every place. In the future,
-it will guarantee the following features:
-* It will visit restaurants for lunch and dinner time
-* It will check for opening time and close time for museum, restaurants, ...
-* It will check transportation time, so it will provide a plan with timing detail
+**makePlan** will guarantee the following features:
+* The route will visit restaurants for lunch and dinner time
+* The route will check for opening time and closing time for museums, restaurants, ...
+* The route will provide guide line time to visits the places
 
 ## Requirements
 * [Python 3+](https://www.python.org/download/releases/3.0/)
@@ -23,4 +23,9 @@ For the dependencies, user can use the following ([pip](https://pip.pypa.io/en/s
 ```bash
 pip install numpy pandas tsp
 ```
+
+## Usage
+
+The easiest way to run the project is to execute the script [plan](https://github.com/nguyenngochuy91/makePlan/blob/master/plan.py)
+ which is inside the directory **makePlan**. Then, simply following the instructions on the terminal
 
