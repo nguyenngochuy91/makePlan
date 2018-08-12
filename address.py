@@ -5,6 +5,7 @@
     End          : /2018
     Dependencies : pip(3) install tsp
                    pip install pandas
+                   pip install numpy
 '''
 # packages for location look up
 import requests
@@ -12,10 +13,12 @@ import requests
 
 
 class Address(object):
-    def __init__(self,address):
+    def __init__(self,address,name,address_type=None):
         self.address  = address
         self.response = self.getResponse()
         self.status   = self.response["status"]
+        self.name     = name
+        self.type     = address_type
         if self.status =="OK":
             self.error      = None
             self.results    = self.response["results"]
